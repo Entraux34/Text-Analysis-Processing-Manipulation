@@ -49,7 +49,7 @@ def main(d):
     a = create_final(z)
     return a
 
-x = main('Grimm')
+x = main('Peace')
 print(x['the'])
 
 file = open('Analysed.dat','wb')
