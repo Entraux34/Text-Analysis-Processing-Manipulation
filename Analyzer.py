@@ -1,5 +1,42 @@
 import operator, pickle
 
+class Word():
+    def __init__(self,a,b,c,d):
+        self.Word = a
+        self.Occurances = b
+        self.Common = c
+        self.Followers = d
+
+def followers(word, wordList, t):
+    x = word
+    if x in t:
+        b = t[x].Followers
+    else:
+        b = {}
+    for i in range(0,len(wordList)-1):
+        if wordList[i] == x:
+            if wordList[i+1] in b:
+               y = b[wordList[i+1]]
+               y += 1
+               b[wordList[i+1]] = y
+            else:
+                b[wordList[i+1]] = 1
+
+    h = sorted(b.items(), key=operator.itemgetter(1), reverse=True)
+    s = {}
+    
+    for i in h:
+        s[i[0]] = i[1]
+        
+    f = []
+    c = 0
+    for i in s:
+        f.append(i)
+        c+=1
+        if c > 15:
+            break
+    return f, b
+
 def extract_words(source):
     file = open(source+'.txt','r')
     wordList = []
@@ -20,13 +57,13 @@ def extract_words(source):
 
 def process_words(wordList, dicti):
     wordDict = dicti
-    for i in wordList:
-        if i in wordDict:
-            x = wordDict[i]
+    for i in range (0,len(wordList)-1):
+        if wordList[i] in wordDict:
+            x = wordDict[wordList[i]]
             x += 1
-            wordDict[i] = x
+            wordDict[wordList[i]] = x
         else:
-            wordDict[i] = 1
+            wordDict[wordList[i]] = 1
     return wordDict
 
 def sort_words(wordDict):
@@ -47,11 +84,40 @@ def main(d):
     y = process_words(x, dicti)
     z = sort_words(y)
     a = create_final(z)
-    return a
+    return a, x
 
-x = main('Peace')
+x, l = main('test')
 print(x['the'])
 
 file = open('Analysed.dat','wb')
 y = pickle.dump(x,file)
 file.close()
+
+current = open('relate.dat','rb')
+t = pickle.load(current)
+current.close()
+
+final = {}
+c =0
+for i in x:
+    fl, fd = followers(i,l, t)
+    obj = Word(i,x[i],fl,fd)
+    final[i] = obj
+    c += 1
+#    if c > 30000:
+#        break
+
+Relate = open('relate.dat','wb')
+pickle.dump(final, Relate)
+Relate.close()
+
+
+
+
+
+
+
+
+
+
+
