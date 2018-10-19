@@ -7,6 +7,7 @@ class Word():
         self.Common = c
         self.Followers = d
 
+#@profile
 def followers(word, wordList, t):
     x = word
     if x in t:
@@ -37,6 +38,7 @@ def followers(word, wordList, t):
             break
     return f, b
 
+#@profile
 def extract_words(source):
     file = open(source+'.txt','r')
     wordList = []
@@ -55,6 +57,7 @@ def extract_words(source):
     file.close()
     return wordList
 
+#@profile
 def process_words(wordList, dicti):
     wordDict = dicti
     for i in range (0,len(wordList)-1):
@@ -66,20 +69,26 @@ def process_words(wordList, dicti):
             wordDict[wordList[i]] = 1
     return wordDict
 
+#@profile
 def sort_words(wordDict):
     sorted_wordList = sorted(wordDict.items(), key=operator.itemgetter(1), reverse=True)
     return sorted_wordList
 
+#@profile
 def create_final(sorted_wordList):
     finaDict = {}
     for i in sorted_wordList:
         finaDict[i[0]] = i[1]
     return finaDict
 
+#@profile
 def main(d):
-    fil = open('Analysed.dat','rb')
-    dicti = pickle.load(fil)
-    fil.close()
+    try:
+        fil = open('Analysed.dat','rb')
+        dicti = pickle.load(fil)
+        fil.close()
+    except:
+        dicti = {}
     x = extract_words(d)
     y = process_words(x, dicti)
     z = sort_words(y)
@@ -110,14 +119,6 @@ for i in x:
 Relate = open('relate.dat','wb')
 pickle.dump(final, Relate)
 Relate.close()
-
-
-
-
-
-
-
-
 
 
 
