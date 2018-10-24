@@ -95,7 +95,7 @@ def main(d):
     a = create_final(z)
     return a, x
 
-x, l = main('test')
+x, l = main('Dracula')
 print(x['the'])
 
 file = open('Analysed.dat','wb')
