@@ -34,7 +34,7 @@ def followers(word, wordList, t):
     for i in s:
         f.append(i)
         c+=1
-        if c > 15:
+        if c > 30:
             break
     return f, b
 
@@ -47,8 +47,8 @@ def extract_words(source):
         for j in x:
             y = j.split(' ')
             for i in y:
-                z = i.strip(',!?\n.":; ')
-                if z != '':
+                z = i.strip(',!?\n.":; 1234567890*-_£$%&()')
+                if z != '' and z not in '1234567890':
                     wordList.append(z.lower())
                 else:
                     continue
@@ -95,7 +95,7 @@ def main(d):
     a = create_final(z)
     return a, x
 
-x, l = main('Dracula')
+x, l = main('Hyde')
 print(x['the'])
 
 file = open('Analysed.dat','wb')
